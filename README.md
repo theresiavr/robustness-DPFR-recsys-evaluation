@@ -33,4 +33,4 @@ series = {WWW '25}
 ```
 
 # Datasets, Model, Evaluation, and Experiments
-Please refer to the [code repository of the WWW'25 paper](https://github.com/theresiavr/can-we-trust-recsys-fairness-evaluation) to find information on dataset downloads, preprocessing, model training, reranking, evaluation, and the experiment code for the conference paper.
+Please refer to the [code repository of the WWW'25 paper](https://github.com/theresiavr/DPFR-recsys-evaluation) to find information on dataset downloads, preprocessing, model training, reranking, evaluation, and the experiment code for the conference paper.
