@@ -21,7 +21,7 @@ list_dataset = [
                 "ML-20M"
                 ]
 
-def get_model_distance(df, path_integral_point, return_all_dist=False):
+def get_model_distance(df, path_integral_point, return_all_dist=False, dist_measure="euclidean"):
     best_model = {}
     for rel_measure in rel_measures:
         best_model[rel_measure] = {}
@@ -36,8 +36,12 @@ def get_model_distance(df, path_integral_point, return_all_dist=False):
                 best_model[rel_measure][fair_measure] = ("-", np.nan)
                 continue
 
+            match dist_measure:
+                case "euclidean":
+                    dist = np.linalg.norm(df1-df2, axis=1)
+                case "manhattan":
+                    dist = np.linalg.norm(df1-df2, axis=1, ord=1)
 
-            dist = np.linalg.norm(df1-df2, axis=1)
             if not return_all_dist:
                 idx = dist.argmin()
                 best_model[rel_measure][fair_measure] = (df.iloc[idx]["source"], df1.iloc[idx].values)
@@ -47,7 +51,7 @@ def get_model_distance(df, path_integral_point, return_all_dist=False):
     best_model = pd.DataFrame(best_model)
     return best_model
 
-def get_model_distance_dict(combined_df, path_integral_point):
+def get_model_distance_dict(combined_df, path_integral_point, dist_measure="euclidean"):
     selected_merged = combined_df\
                             .query("source=='pareto'")\
                             .drop(columns="source")
@@ -64,7 +68,7 @@ def get_model_distance_dict(combined_df, path_integral_point):
 
 
         model_distance = get_model_distance(
-                combined_df.query("dataset==@data & source!='pareto'"), path_integral_point_data, return_all_dist=True
+                combined_df.query("dataset==@data & source!='pareto'"), path_integral_point_data, return_all_dist=True, dist_measure=dist_measure
                 )
 
         model_distance_dict[data] = model_distance
